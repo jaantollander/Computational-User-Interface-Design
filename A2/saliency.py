@@ -1,35 +1,50 @@
+from tempfile import NamedTemporaryFile
+
 import cv2
-from PIL import Image, ImageFont, ImageDraw
+import numpy as np
 import skimage.io
-
-
-def grayscale(v):
-    """
-    http://www.perbang.dk/rgb/3F3F3F/
-
-    :param v: v=0 -> white, v=1 -> black
-    :return:
-    """
-    assert 0 <= v <= 1
-    r = int(255 * v)
-    return "#{0}{0}{0}".format(hex(r)[2:])
+from PIL import Image, ImageFont, ImageDraw
+import matplotlib.pyplot as plt
 
 
 def header_image_text(v):
-    color = grayscale(v)
+    assert 0.0 <= v <= 1.0
+    # Grayscale colors
+    r = int(255 * v)
+    color = (r, r, r)
     header_text = "Jaan Tollander de Balsch"
     xy = (40, 20)
 
     font = ImageFont.truetype("arial.ttf", 70)
     image = Image.open("figures/header.jpg")
-    # TODO: image shading
     draw = ImageDraw.Draw(image)
     draw.text(xy, header_text, font=font, fill=color)
     return image
 
 
+def header_image_text_mask():
+    color = "black"
+    header_text = "Jaan Tollander de Balsch"
+    xy = (40, 20)
+
+    font = ImageFont.truetype("arial.ttf", 70)
+    header = Image.open("figures/header.jpg")
+    image = Image.new('RGB', header.size, color="white")
+    draw = ImageDraw.Draw(image)
+    draw.text(xy, header_text, font=font, fill=color)
+    with NamedTemporaryFile() as file:
+        image.save(file, format='png')
+        arr = skimage.io.imread(file.name, as_gray=True)
+    # Return a mask of dark pixels, i.e. the text pixels.
+    return arr < 0.1
+
+
 if __name__ == '__main__':
-    n = 10
+    mask = header_image_text_mask()
+    vs = []
+    means = []
+
+    n = 20
     for i in range(n+1):
         v = i/n
         header = header_image_text(v)
@@ -40,12 +55,18 @@ if __name__ == '__main__':
         # initialize OpenCV's static fine grained saliency detector and
         # compute the saliency map
         saliency = cv2.saliency.StaticSaliencyFineGrained_create()
-        (success, saliencyMap) = saliency.computeSaliency(image)
-
-        # if we would like a *binary* map that we could process for contours,
-        # compute convex hull's, extract bounding boxes, etc., we can
-        # additionally threshold the saliency map
-        # threshMap = cv2.threshold(saliencyMap, 0, 255,
-        #                           cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+        _, saliencyMap = saliency.computeSaliency(image)
 
         skimage.io.imsave(f"figures/saliencyMap_{i}.png", saliencyMap)
+
+        text = saliencyMap[mask]
+        vs.append(v)
+        means.append(np.mean(text))
+        print(f"v: {v:.2f}: mean: {np.mean(text):.3f}")
+
+    plt.plot(vs, means, label="Mean")
+    plt.xlabel("$v$")
+    plt.ylabel("Objective")
+    plt.legend()
+    # plt.savefig("figures/objective.png", dpi=300)
+    plt.show()
