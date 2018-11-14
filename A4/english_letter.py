@@ -12,7 +12,7 @@ distribution = [
 ]
 
 
-default_multi_tap_layout = {
+default_layout = {
     2: ['a', 'b', 'c'],
     3: ['d', 'e', 'f'],
     4: ['g', 'h', 'i'],
@@ -49,7 +49,19 @@ def expected_number_of_keypresses(layout: Dict, distribution: List):
     return score
 
 
-print("Entropy of English letter: ", entropy([p for (l, p) in distribution]))
-print(optimized_multi_tap_layout([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], distribution))
-print(optimized_multi_tap_layout([2, 3, 4, 5, 6, 7, 8, 9], distribution))
-print(expected_number_of_keypresses(default_multi_tap_layout, distribution))
+s = entropy([p for (l, p) in distribution])
+keys1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
+keys2 = [2, 3, 4, 5, 6, 7, 8, 9]
+layout1, score1 = optimized_multi_tap_layout(keys1, distribution)
+layout2, score2 = optimized_multi_tap_layout(keys2, distribution)
+score_default = expected_number_of_keypresses(default_layout, distribution)
+
+print(f"Entropy of English letter:\n{s}")
+print(f"Expected number of key presses with keys {keys1}:\n{score1}")
+print(f"Expected number of key presses with keys {keys2}:\n{score2}")
+print(f"Expected number of key presses with keys {keys2}:\n{score_default}")
+print(f"Ration between score2 and score_default:\n{score2/score_default}")
+
+print(f"Optimal layout 1:{layout1}")
+print(f"Optimal layout 2:{layout2}")
+print(f"Default layout: {default_layout}")
