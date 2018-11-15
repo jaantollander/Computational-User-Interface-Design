@@ -15,7 +15,7 @@ key_fine = np.array([
 disp_coarse = np.arange(0.0, 4.5, 1.0)
 key_coarse = np.array([2325, 2232, 2081, 1779, 1129])
 
-# The models
+# Calibration models
 calibrate = interp1d(disp_coarse, key_coarse)
 slope, intercept, rvalue, pvalue, stderr = linregress(disp_coarse, key_coarse)
 
