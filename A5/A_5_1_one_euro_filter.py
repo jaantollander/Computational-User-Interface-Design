@@ -1,15 +1,15 @@
 import math
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas
-import matplotlib.pyplot as plt
 
 
 def low_pass_filter(a, x, x_prev):
     return a * x + (1 - a) * x_prev
 
 
-def alpha(te, cutoff):
+def smoothing_factor(te, cutoff):
     tau = 1.0 / (2 * math.pi * cutoff)
     return 1.0 / (1.0 + tau / te)
 
@@ -28,13 +28,13 @@ class OneEuroFilter:
         t_e = t - self.t0
 
         # Derivative of the signal
-        ad = alpha(t_e, self.d_cutoff)
+        a_d = smoothing_factor(t_e, self.d_cutoff)
         dx = (x - self.x_prev) / t_e
-        dx_hat = low_pass_filter(ad, dx, self.dx_prev)
+        dx_hat = low_pass_filter(a_d, dx, self.dx_prev)
 
         # Value of the signal
         cutoff = self.min_cutoff + self.beta * abs(dx_hat)
-        a = alpha(t_e, cutoff)
+        a = smoothing_factor(t_e, cutoff)
         x_hat = low_pass_filter(a, x, self.x_prev)
 
         # Memorize the values.
@@ -50,8 +50,8 @@ if __name__ == '__main__':
     t, x = df.values[:, 0], df.values[:, 1]
 
     # Try different paramaters
-    for min_cutoff in [1.0, 0.5, 0.1, 0.01, 0.005, 0.001]:
-        for beta in [0.1, 0.01, 0.007, 0.005, 0.003, 1e-3]:
+    for min_cutoff in [0.1, 0.05, 0.01, 0.005, 0.001]:
+        for beta in [0.05, 0.01, 0.007, 0.005, 0.003, 1e-3]:
             one_euro_filter = OneEuroFilter(
                 t[0], x[0],
                 min_cutoff=min_cutoff, beta=beta)
@@ -62,6 +62,6 @@ if __name__ == '__main__':
 
             plt.plot(t, x, alpha=0.3, color="cyan")
             plt.plot(t, x2, color="blue")
-            plt.plot(t, np.abs(x-x2), color="red", alpha=0.5)
+            plt.plot(t, np.abs(x-x2), color="red", alpha=0.3)
             plt.title(f"min_cutoff: {min_cutoff}, beta: {beta}")
             plt.show()
