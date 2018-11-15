@@ -1,17 +1,18 @@
 # Computational User Interface Design
 ## Material
 * [Computational Interaction](https://books.google.fi/books?id=NXFGDwAAQBAJ)
+* [AIM - Aalto Interface Metrics service](https://interfacemetrics.aalto.fi/)
 
 
 ## Convert a Jupyter notebook into PDF for static reading
 Convert jupyter notebook to markdown file.
 ```bash
-jypyter nbconvert filename.ipynb --to markdown
+jupyter nbconvert $FILENAME.ipynb --to markdown
 ```
 
 Convert markdown file to pdf via Pandoc and LaTeX.
 ```bash
-FILENAME=""
+FILENAME="A_1_1"
 pandoc $FILENAME.md \
 --from=markdown+raw_tex+tex_math_dollars \
 --to=latex \
