@@ -1,7 +1,7 @@
 import math
 from typing import Dict, List, Iterable
 
-distribution = [
+letter_distribution = [
     ['a', 0.08167], ['b', 0.01492], ['c', 0.02782], ['d', 0.04253],
     ['e', 0.12702], ['f', 0.02228], ['g', 0.02015], ['h', 0.06094],
     ['i', 0.06966], ['j', 0.00153], ['k', 0.00772], ['l', 0.04025],
@@ -10,7 +10,6 @@ distribution = [
     ['u', 0.02758], ['v', 0.00978], ['w', 0.02360], ['x', 0.00150],
     ['y', 0.01974], ['z', 0.00074],
 ]
-
 
 default_layout = {
     2: ['a', 'b', 'c'],
@@ -49,12 +48,13 @@ def expected_number_of_keypresses(layout: Dict, distribution: List):
     return score
 
 
-s = entropy([p for (l, p) in distribution])
+s = entropy([p for (l, p) in letter_distribution])
 keys1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
 keys2 = [2, 3, 4, 5, 6, 7, 8, 9]
-layout1, score1 = optimized_multi_tap_layout(keys1, distribution)
-layout2, score2 = optimized_multi_tap_layout(keys2, distribution)
-score_default = expected_number_of_keypresses(default_layout, distribution)
+layout1, score1 = optimized_multi_tap_layout(keys1, letter_distribution)
+layout2, score2 = optimized_multi_tap_layout(keys2, letter_distribution)
+score_default = expected_number_of_keypresses(default_layout,
+                                              letter_distribution)
 
 print(f"Entropy of English letter:\n{s}")
 print(f"Expected number of key presses with keys {keys1}:\n{score1}")
