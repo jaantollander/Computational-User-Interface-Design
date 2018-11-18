@@ -29,7 +29,11 @@ def to_col(v1):
 def feature_vector(data):
     # Position of the finger tips
     F = np.array(data["FingertipsPositions"]).reshape((5, 3))
-    # TODO: missing values?
+
+    # Set missing values (vector F[i] is zero vector) to nan.
+    for i in range(len(F)):
+        if norm(F[i]) == 0:
+            F[i, :] = np.nan
 
     # Palm center
     C = np.array(data["PalmPosition"])
@@ -48,14 +52,12 @@ def feature_vector(data):
     F_pi = to_col(np.dot(F, n.T)) * n
 
     # Fingertips angle
-    # TODO: scale to interval [0.5, 1], set missing values 0
     A = np.array(list(angle(F_pi_i-C, h) for F_pi_i in F_pi))
 
     # Fingertips distance
     D = norm(F-C, axis=1) / S
 
     # Fingertips elevation
-    # TODO: scale to interval [0.5, 1], set missing values 0
     E = np.sign(np.dot((F-F_pi), n)) * norm(F-F_pi, axis=1) / S
 
     return np.hstack((A, D, E))
@@ -83,14 +85,17 @@ def distplot(features, labels):
         plt.figure()
         plt.title(f"${name}$")
         sns.distplot([f[i] for (f, l) in zip(features, labels) if l == 4],
-                     label="Feature 4")
+                     label="Feature 4", kde=False, bins=20)
         sns.distplot([f[i] for (f, l) in zip(features, labels) if l == 5],
-                     label="Feature 5")
+                     label="Feature 5", kde=False, bins=20)
         plt.legend()
         plt.show()
 
 
 features, labels = features_and_labels()
+# TODO: scale A to interval [0.5, 1]
+# TODO: scale E to interval [0.5, 1]
+features[np.isnan(features)] = 0.0  # Set missing values to 0
 distplot(features, labels)
 
 
