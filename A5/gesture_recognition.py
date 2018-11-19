@@ -1,11 +1,14 @@
 import os
 from typing import Dict, List
 
-import numpy as np
-from numpy.linalg import norm
-
 import matplotlib.pyplot as plt
+import numpy as np
 import seaborn as sns
+from numpy.linalg import norm
+from sklearn import svm
+from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.model_selection import cross_val_score, KFold
+from sklearn.preprocessing import MinMaxScaler
 
 
 def parse(filepath) -> Dict[str, List[float]]:
@@ -32,15 +35,15 @@ def feature_vector(data):
 
     # Set missing values (vector F[i] is zero vector) to nan.
     for i in range(len(F)):
-        if norm(F[i]) == 0:
+        if np.all(F[i] == 0):
             F[i, :] = np.nan
 
     # Palm center
     C = np.array(data["PalmPosition"])
 
     # Orientation unit vectors
-    n = np.array(data["HandDirection"])
-    h = np.array(data["PalmNormal"])
+    h = np.array(data["HandDirection"])
+    n = np.array(data["PalmNormal"])
 
     # Index of the middle finger
     middle = 2
@@ -93,15 +96,24 @@ def distplot(features, labels):
 
 
 features, labels = features_and_labels()
-# TODO: scale A to interval [0.5, 1]
-# TODO: scale E to interval [0.5, 1]
-features[np.isnan(features)] = 0.0  # Set missing values to 0
-distplot(features, labels)
+scaler = MinMaxScaler((0.5, 1))
+scaler.fit(features)
+X = scaler.transform(features)
+y = labels
+X[np.isnan(X)] = 0
+
+# distplot(X, y)
 
 
-# participant = "P1"
-# label = "G4"
-# filename = "1_leap_motion.csv"
-# filepath = os.path.join("gesture_set", participant, label, filename)
-# data = parse(filepath)
-# A, D, E = feature_vector(data)
+# SVM model
+random_state = 3
+clf = svm.SVC(C=2.0, kernel="linear")
+cv = KFold(n_splits=5, shuffle=True, random_state=random_state)
+scores = cross_val_score(clf, X, y, cv=cv)
+
+print(f"Accuracy: {scores.mean():.2f} (+/- {2*scores.std():0.2f})")
+
+clf.fit(X, y)
+y_pred = clf.predict(X)
+print(classification_report(y, y_pred))
+print(confusion_matrix(y, y_pred))

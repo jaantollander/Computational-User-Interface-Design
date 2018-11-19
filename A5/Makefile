@@ -16,5 +16,10 @@ pdf:
 	--bibliography=bibliography.bib \
 	--csl=https://raw.githubusercontent.com/citation-style-language/styles/master/harvard-anglia-ruskin-university.csl \
 
+
+notebook-pdf:
+	jupyter nbconvert A_5_2.ipynb --to pdf
+
+
 clean:
 	rm $(BUILDDIR)/*
