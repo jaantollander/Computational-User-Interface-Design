@@ -1,0 +1,38 @@
+---
+title: A7.1 - Rearrangement of a Linear Menu
+author: Jaan Tollander de Balsch - 452056
+date: \today
+header-includes: \usepackage{unicode-math}
+---
+<!-- ## Linear assignment problem -->
+The cost $c_{ij}$ for assigning an item \(i\) to a position \(j\) is defined by the expected time to select the item: $c_{ij} = p_i \cdot d_j \cdot r$. Thus the problem can be formulated as:
+
+$$\min \sum_{i=1}^N\sum_{j=1}^N p_i \cdot d_j \cdot r \cdot x_{ij} $$
+$$\text{subject to} \hspace{6cm} $$
+$$\sum_{i=1}^N x_{ij} = 1\hspace{1cm} \forall j = 1 .. N$$
+$$\sum_{j=1}^N x_{ij} = 1\hspace{1cm} \forall i = 1 .. N$$
+$$x_{ij} \in \{0, 1\} \hspace{1.6cm} \forall i, j = 1 .. N$$
+
+* \(x_{ij}\) denotes if an item \(i\) is assigned to position \(j\).
+* \(p_i\) is the frequency distribution of the menu items. There are two conditions that must hold for a the distribution:  \(\sum_{i=1}^N p_i = 1\) and \(p_i≥0\).
+* \(d_j≥0\) is the distance from the start of the menu.
+* \(r>0\) is the constant reading cost.
+
+---
+
+If there are two frequency distributions \(p^{novice}\) and they  \(p^{expert}\) they can be merged into one by taking a weighted sum of the elements \[p_i = w_1 p_{i}^{novice} + w_2 p_{i}^{expert}\] where \(w_1+w_2=1\) and \(w_i>0\) for all elements \(i∈\{i,...,N\}\). It can be verified that the result is also a frequency ditribution:
+
+\[
+\begin{aligned}
+\sum_{i=1}^N p_i &= \sum_{i=1}^N (w_1 p_{i}^{novice} + w_2 p_{i}^{expert}) \\
+&= w_1 \sum_{i=1}^N p_{i}^{novice} + w_2 \sum_{i=1}^N p_{i}^{expert} \\
+&= w_1 + w_2 \\
+&= 1
+\end{aligned}
+\]
+
+Also \(p_i>0\) for all \(i\) because the weights are positive and the elements in the two distribtions are positive by defintion.
+
+---
+
+The linear assignment problem can be solved in the same way as usual by using the resulting frequency from merging the two distributions. Changing the weight effects how much each frequency distribution conributes to the optimal solution, i.e. if the weigth for novice distribution is higher than for experts, the results will favor novices over experts.s
