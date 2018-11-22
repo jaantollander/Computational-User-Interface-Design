@@ -1,0 +1,11 @@
+name: gpyopt
+channels:
+  - conda-forge
+dependencies:
+  - python=3.6
+  - jupyter
+  - matplotlib
+  - numpy
+  - scipy
+  - pip:
+    - gpyopt
