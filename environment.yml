@@ -1,15 +1,22 @@
-name: cuid2018
+name: cuid36
 channels:
   - conda-forge
+  - http://conda.anaconda.org/gurobi
 dependencies:
-  - python=3.7
+  - python=3.6
   - jupyter
   - matplotlib
   - seaborn
   - numpy
   - pandas
   - scipy
-  - cv2
-  - opencv-contrib-python
+#  - cv2
+#  - opencv-contrib-python
   - scikit-image
   - sympy
+  - scikit-learn
+  - gurobi
+  - pygraphviz
+  - pip:
+      - gpyopt
+      - transitions[diagrams]
