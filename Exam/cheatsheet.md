@@ -33,10 +33,42 @@ Example:
 2) Rosenholtz' clutter model
 3) Ability to predict how bottom-up (saliency) and top-down attention would proceed for a given layout.
 
+---
+
+**Human visual system** (HSV)
+
+1) Sensation (1-100 ms)
+2) Detection (30-300 ms)
+3) Organization (30-500 ms)
+4) Selection (200-400 ms)
+5) Adaptation (seconds to years)
+
+**Windows of visibility**: Limits to HVS
+
+1) Wavelength (380-780 nm)
+2) Field of view (190 degrees horizontal, 125 degrees vertical)
+3) Trichromaticity (perception of blue, green and red wavelengths)
+4) Luminance (100 max/min)
+5) Spatial frequency
+6) Local contrast
+7) Fixation
+
+Clutter as feature congestion:
+
+* HVS has evolved to spot unusual items in scenes
+* Clutter is the state in which excess items, or their representation or organization, lead to a degratation of performance at some task.
+
+**Rosenholz' clutter model**: If a feature vector is an outlier to the local distribution of feature vectors, then that feature is **salient**.
+
 
 ## Control
 1) Ability to predict movement with Fitts' law and steering law when parameters are given
 2) Ability to model (block diagram) a pointing gesture using control theory, in particular, a block diagram implementing 2OL or similar model
+
+---
+
+* **Fitt's law**
+* **Steering law**
 
 
 ## Input
