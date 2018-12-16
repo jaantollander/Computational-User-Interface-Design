@@ -67,14 +67,43 @@ Clutter as feature congestion:
 
 ---
 
-* **Fitt's law**
-* **Steering law**
+**Fitts' law**: Predicts pointing movement time as a function of distance and width of target. \[MT = a + b\log_2\left(\frac{D}{W}+1\right)\] where \(D\) is the distance of the target, \(W\) is the width of the target, and \(a\) and \(b\) are parameters obtained by fitting the model into data.
+
+**Steering law**: Predicts steering movement time as a function of distance and width of target. \[MT=a+b \frac{A}{W}\] where \(A\) is the distance of the steering line, \(W\) is the width of the steering line, and \(a\) and \(b\) are parameters obtained by fitting the model into data.
+
+**Control Theory**:
+
+* 0OL -- Position control
+* 1OL -- Velocity control
+* 2OL -- Acceleration control
 
 
 ## Input
 1) Ability to tell what kinds of filtering are needed for different issues in raw sensor data
 2) Understanding of operating principles of a filter (e.g. 1€ filter) and a recognizer (e.g. 1$ recognizer)
 3) Ability to construct a decoder for single or sequential input
+
+---
+
+**Filtering** is required due to **noise** in signal. Noise is unwanted disturbance (or) fluctuation in an electric signal. Types of sensor noise:
+
+1) *Noise* -- Continuous random variations in the measured position.
+2) *Dropout* -- Complete loss of measurement or tracking.
+3) *Glitches* -- Random spikes of sensing that are not due to intentional movement.
+
+**Filtering Techniques**: Trade-off between *jitter* and *lag*.
+
+1) *Moving average* \[\hat{X}=∑_{i=t-n}^{t}X_is\] where \(\hat{X}\) is filtered value, \(X_i\) value at time \(i\), \(t\) current time and \(n\) window size.
+
+    - \(n\) increase: more lag, less jitter
+    - \(n\) decrease: less lag, more jitter
+
+2) *Low-pass filter* (single exponential) \[\hat{X}_i=αX_i+(1-α)\hat{X}_{i-1}\] where \(\hat{X}_i\) filtered values at time \(i\), \(X_i\) sensor value at time \(i\) and \(α∈[0,1]\) smoothing factor.
+
+    - \(α\) increase: less lag, more jitter
+    - \(α\) decrease: more lag, less jitter
+
+3) *1€-filter*: A low-pass filter where the value of \(α\) is dependent on the velocity. The idea is that at low speeds jitter is a problem and at high speeds lag is a problem. Because \(α\) depends on speed it adjusts to this. \[α = \frac{1}{1 + \frac{τ}{T_e}}\] \[τ = \frac{1}{2πf_C}\] \[f_C=f_{C_{min}} + β|\dot{\hat{X}}_i|\]
 
 
 ## Bayesian human-in-the-loop optimization
