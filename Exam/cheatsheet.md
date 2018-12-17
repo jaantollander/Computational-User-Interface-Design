@@ -187,9 +187,18 @@ where
 1) Ability to  draw a finite state diagram for simple interactive devices
 2) Ability to interpret a simple verification statement expressed with temporal logic.
 
+---
+
+Create the graph of the finite state machine, then use graph algorithms to prove statements.
+
 
 ## Cognitive Models
 Ability to formulate an information foraging diagram (patch model) for a given application case.
+
+---
+
+* Patch and diet model.
+* Can be used to calculate how much time should be used for *foraging* information on a single patch until moving to the next one.
 
 
 ## Bandits
