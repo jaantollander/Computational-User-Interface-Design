@@ -149,6 +149,39 @@ $$x_{ij} \in \{0, 1\} \hspace{1.6cm} \forall i, j = 1 .. N$$
 ## Biomechanics
 Ability to evaluate the fatiguability of a given posture or movement using the Consumed Endurance model (when parameter values are given).
 
+---
+
+Strength is defined
+\[
+S(T_{shoulder}) = 100 ⋅ \frac{T_{shoulder}}{T_{max}}.
+\label{strength}
+\tag{1}
+\]
+
+Endurance is defined
+\[
+E(T_{shoulder}) = \frac{1236.5}{(S(T_{shoulder}) - 15)^{0.618}} - 72.5.
+\label{endurance}
+\tag{2}
+\]
+
+The magnitude of the torque for static arm is
+\[
+\begin{aligned}
+T_{shoulder} & = \|𝐓_{shoulder}\| \\
+& = \|𝐫×m𝐠\| \\
+& = m r_x g
+\end{aligned},
+\label{torque}
+\tag{3}
+\]
+
+where
+
+* \(𝐫=[r_x,r_y]\) is a vector pointing to the *center of mass* of the arm.
+* \(m\) the total mass of the arm.
+* \(𝐠=[0,g]\) is gravitation vector where \(g=9.81\) is the magnitude of the gravitational acceleration.
+
 
 ## Formal Methods
 1) Ability to  draw a finite state diagram for simple interactive devices
