@@ -107,11 +107,43 @@ Clutter as feature congestion:
 
 
 ## Bayesian human-in-the-loop optimization
-Understanding of core concepts in Bayesian optimization, including surrogate mode, prior update, acquisition function
+Understanding of core concepts in Bayesian optimization, including surrogate model, prior update, acquisition function
+
+---
+
+**Bayesian optimization**: Find the minimum of a function \(f(x)\) withing some bounded domain \(X∈ℝ^D\) \[x^*=\operatorname{argmin}_{x∈X}f(x)\]
+
+* \(f\) is a black box that can be only evaluate point-wise
+* \(f\) can be multi-modal
+* \(f\) is slow or expensive to evaluate
+* evaluations of \(f\) are noisy
+* \(f\) has no gradients available
+
+Want to find the minimum with small number of evaluations of \(f\)
+
+1) Construct a tractable **statistical surrogate model** \(g\) of \(f\).
+    - Gaussian processes
+2) Turn the optimization problem into **a sequence of easier problems**.
+    - Choose next \(x\) to evaluate \(f\) using **guided exploration** by maximizing an **acquisition function** \(α(x; D_{t-1})\) \[x_t = \operatorname{argmax}_x α(x; D_{t-1}).\]
 
 
 ## Integer Programming
 Ability to formulate a menu and keyboard design problem as a mixed integer linear program.
+
+---
+
+**Linear menu assignment problem**: The cost $c_{ij}$ for assigning an item \(i\) to a position \(j\) is defined by the expected time to select the item: $c_{ij} = p_i \cdot d_j \cdot r$. Thus the problem can be formulated as:
+
+$$\min \sum_{i=1}^N\sum_{j=1}^N p_i \cdot d_j \cdot r \cdot x_{ij} $$
+$$\text{subject to} \hspace{6cm} $$
+$$\sum_{i=1}^N x_{ij} = 1\hspace{1cm} \forall j = 1 .. N$$
+$$\sum_{j=1}^N x_{ij} = 1\hspace{1cm} \forall i = 1 .. N$$
+$$x_{ij} \in \{0, 1\} \hspace{1.6cm} \forall i, j = 1 .. N$$
+
+* \(x_{ij}\) denotes if an item \(i\) is assigned to position \(j\).
+* \(p_i\) is the frequency distribution of the menu items. There are two conditions that must hold for a the distribution:  \(\sum_{i=1}^N p_i = 1\) and \(p_i≥0\).
+* \(d_j≥0\) is the distance from the start of the menu.
+* \(r>0\) is the constant reading cost.
 
 
 ## Biomechanics
