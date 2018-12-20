@@ -4,8 +4,6 @@ from os import makedirs
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas
-from matplotlib.animation import MovieWriter
-from matplotlib.cbook import mkdirs
 
 
 def low_pass_filter(a, x, x_prev):
@@ -110,9 +108,3 @@ def plot_filtered_signal(min_cutoff=0.008, beta=0.002):
     plt.xlabel("$t$")
     plt.ylabel("$X$")
     plt.savefig(f"figures/noise_filtered_{min_cutoff:.3f}_{beta:.3f}.png", dpi=300)
-
-
-if __name__ == '__main__':
-    # plot_signal()
-    # plot_filtered_signal()
-    plots()
